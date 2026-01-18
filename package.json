@@ -1,0 +1,20 @@
+{
+  "name": "ryn-bot-auto",
+  "version": "1.0.0",
+  "description": "Auto Send Data to Owner",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "npm:jagproject",
+    "@adiwajshing/keyed-db": "^0.2.4",
+    "pino": "^7.0.5",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.1",
+    "readline": "^1.3.0",
+    "node-fetch": "^2.6.1"
+  }
+}
