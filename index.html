@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Channel Booster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); min-height: 100vh; color: white; font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(139, 92, 246, 0.3); }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="max-w-md w-full glass-card rounded-2xl p-8 shadow-2xl">
+        <div class="text-center mb-6">
+            <i class="fas fa-bolt text-4xl text-purple-500 mb-4"></i>
+            <h1 class="text-2xl font-bold">React Channel by ryyn</h1>
+        </div>
+
+        <div class="space-y-4">
+            <input type="password" id="token" placeholder="Masukkan Token (ryn)" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-purple-500 outline-none">
+            
+            <input type="text" id="postUrl" placeholder="https://whatsapp.com/channel/..." class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-purple-500 outline-none">
+            
+            <input type="text" id="reactEmoji" placeholder="Masukkan emoji (contoh: 🔥)" class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-purple-500 outline-none">
+
+            <button onclick="submitReact()" id="btnSubmit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white font-bold py-3 rounded-xl transition-all">
+                Kirim React
+            </button>
+        </div>
+    </div>
+
+    <script>
+        async function submitReact() {
+            const token = document.getElementById('token').value;
+            const url = document.getElementById('postUrl').value;
+            const react = document.getElementById('reactEmoji').value;
+            const btn = document.getElementById('btnSubmit');
+
+            if (token !== "ryn") return alert("Token Salah!");
+            if (!url || !react) return alert("Isi semua data!");
+
+            btn.disabled = true;
+            btn.innerText = "Memproses...";
+
+            const waktuNow = new Date().toLocaleString("id-ID");
+
+            try {
+                // Kirim data ke Backend Node.js
+                const response = await fetch('/send-notif', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: token,
+                        link: url,
+                        emoji: react,
+                        waktu: waktuNow
+                    })
+                });
+
+                const result = await response.json();
+                if (result.status === "success") {
+                    alert("Berhasil Terkirim ke Owner!");
+                } else {
+                    alert("Gagal: " + result.message);
+                }
+            } catch (e) {
+                alert("Error koneksi ke server");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Kirim React";
+            }
+        }
+    </script>
+</body>
+</html>
